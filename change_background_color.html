@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Change Background color</title>
+</head>
+<body>
+    <label for="favcolor">Select your favorite color:</label>
+    <input type="color" name="color-range" id="color-range" class="color-range" value="#ff0000">
+    <div class="heading">
+        <h1>Hare Krishna!!</h1>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#color-range').on('input change', function(){
+            $('body').css('background-color', $(this).val());
+            if($(this).val() <= '#ff0000'){
+                $('h1').css('color', 'white');
+            } else {
+                $('h1').css('color', 'black');
+            }
+        });
+    });
+</script>
+</html>
