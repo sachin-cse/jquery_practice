@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add Value in drop down list</title>
+</head>
+<body>
+    <input type="text" name="text-value" id="text-value">
+    <input type="button" value="Add Value" id="add_value">
+    <br>
+    <br>
+    <div class="heading">
+        <select name="append_value" id="append_value">
+            <option value="" disabled selected value>Select Value</option>
+        </select>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#add_value').on('click', function(){
+            var input_val = $('#text-value').val();
+            if(input_val != ''){
+                $('#append_value').append(`<option value="${input_val}">${input_val}</option>`);
+                //$('#append_value').append('<option value="'+input_val+'">'+input_val+'</option>');
+                //$('#append_value').append(new Option(input_val,input_val));
+            } else {
+                alert('Please input your value')
+            }
+        });
+    });
+</script>
+</html>
