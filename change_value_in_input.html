@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add Value in drop down list</title>
+</head>
+<body>
+    <lable>Enter Value</lable>
+    <input type="text" name="text-value" id="text-value">
+    <br>
+    <br>
+    <div class="heading">
+        <lable>Change Value</lable>
+        <input type="text" name="change_value" id="change_value">
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#text-value').on('keyup', function(){
+            var inputVal = $(this).val();
+            $('#change_value').val(inputVal);
+        });
+    });
+</script>
+</html>
