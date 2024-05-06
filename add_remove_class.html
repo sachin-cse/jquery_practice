@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add or Remove Class From Input Box</title>
+    <style>
+        .error{
+            border:2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <lable>Enter Value</lable>
+    <input type="text" name="text-value" id="text-value">
+    <br>
+    <br>
+    <div class="heading">
+        <input type="button" value="Add Value" name="add_value" id="add_value">
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#add_value').on('click', function(){
+            if($('#text-value').val() != ''){
+                $('#text-value').removeClass('error');
+            } else {
+                $('#text-value').addClass('error');
+                alert('Please enter your value');
+            }
+        });
+    });
+</script>
+</html>
