@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add or Remove Class From Input Box</title>
+    <style>
+        .error{
+            border:2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <table id="mytable">
+        <tbody>
+            <tr>
+                <td><input type="text" id="name"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="email"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="address"></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="button" id="showValue" value="Show Value">
+    <div id="result"></div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#showValue').on('click', function(){
+            var resultString = '';
+            $('#mytable tr').each(function(){
+                resultString+=" "+$(this).find('input').val();
+            });
+            $('#result').html(resultString);
+        });
+    });
+</script>
+</html>
