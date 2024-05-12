@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add Dynamic Row</title>
+</head>
+<body>
+    <table id="mytable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th><input type="button" value="Add Row" id="add_row"></th>
+            </tr>
+        </thead>
+
+        <tbody id="tblData">
+            <tr>
+                <td><input type="text" name="name" id="name"></td>
+                <td><input type="text" name="email" id="email"></td>
+                <td><input type="text" name="phone" id="phone"></td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </tbody>
+    </table>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#add_row').on('click', function(){
+            var dynamic_row = '<tr>'
+            dynamic_row += '<td><input type="text" name="name" id="name"></td>' +
+                            '<td><input type="text" name="email" id="email"></td>' +
+                            '<td><input type="text" name="phone" id="phone"></td>' +
+                        '</tr';
+            $('#tblData').append(dynamic_row);
+        })
+    });
+</script>
+</html>
