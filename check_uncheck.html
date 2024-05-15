@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add Dynamic Row</title>
+</head>
+<body>
+    <br>
+        <input type="checkbox" id="checkAll">select all<br>
+        <input type="checkbox" class="check">1<br>
+        <input type="checkbox" class="check">2<br>
+        <input type="checkbox" class="check">3
+
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#checkAll').on('click', function(){
+            if($('#checkAll').is(':checked')){
+                $('.check').prop('checked', true);
+            }else{
+                $('.check').prop('checked', false);
+            }
+        });
+    });
+</script>
+</html>
