@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Add Value in drop down list</title>
+</head>
+<body>
+    <input type="button" value="Add Value" id="add_value">
+    <input type="button" value="Remove Value" id="remove_value">
+    <br>
+    <br>
+    <div class="heading">
+        <select name="append_value" id="append_value">
+            <option value="" disabled selected value>Select Value</option>
+        </select>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#add_value').on('click', function(){
+            var val = ['html', 'css', 'js'];
+            for(var i=0; i<=val.length-1; i++){
+                $('#append_value').append(`<option value="${i}">${val[i]}</option>`);
+            }
+        });
+
+        $('#remove_value').on('click', function(){
+            $('#append_value').find('option').not(':nth-child(1)').remove();
+        })
+    });
+</script>
+</html>
