@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Load more data on button click using jQuery </title>
+<script src="./cdn/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:void(0);" id="on_click">Click Me</a>
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function(){
+        $('#on_click').on('click', function(){
+            $("<span>Hello World!</span>").appendTo("body");
+            $('span').addClass('body');
+        });
+    });
+</script>
