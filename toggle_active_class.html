@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./cdn/jquery.min.js"></script>
+    <title>Toggle Active Class</title>
+</head>
+<style>
+    .active{
+        color:red;
+        background-color: whitesmoke;
+    }
+</style>
+<body>
+        <div class="d-flex">
+            <button class="btnclick active">Click</button>
+            <button class="btnclick">Click</button>
+            <button class="btnclick">Click</button>
+            <button class="btnclick">Click</button>
+        </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('.btnclick').on('click', function(e){
+            e.preventDefault();
+            $('.btnclick').removeClass('active');
+            $(this).addClass('active');
+        });
+    })
+</script>
+</html>
