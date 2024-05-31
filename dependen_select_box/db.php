@@ -10,17 +10,19 @@ class Database {
     function __construct(){
         $this->conn = mysqli_connect($this->host, $this->db_username, $this->db_password, $this->db_name, $this->port);
 
-        if($this->conn){
-            echo "Connection established";
-        }else{
+
+        if(!$this->conn){
             echo "Connection failed".mysqli_connect_error();
         }
+    }
+
+    public function getConnection(){
+        return $this->conn;
     }
 
 }
 
 $newConn = new Database();
-
 
 ?>
 
