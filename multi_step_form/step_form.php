@@ -1,8 +1,21 @@
 <?php
+session_start();
 include 'db.php';
 $database = new Database();
 $conn = $database->getConnection();
 
+if(!empty($_SESSION['id'])){
+    $sql = "SELECT * FROM `multi_step_form_data` WHERE `id` = ".$_SESSION['id']."";
+    $query = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($query);
+    // print_r($row); exit;
+} 
+
+// print_r($row); exit;
+
+$sessionVal = json_decode($row['login_details']??'', true);
+$personaldetails = json_decode($row['personal_details']??'', true);
+$contact_details = json_decode($row['contact_details']??'', true);
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +26,7 @@ $conn = $database->getConnection();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
-    <title>Document</title>
+    <title>Multi Step Form</title>
 
 <style>
   .box
@@ -23,8 +36,8 @@ $conn = $database->getConnection();
   }
   .active_tab1
   {
-   background-color:#fff;
-   color:#333;
+   background-color:blue;
+   color:white;
    font-weight: 600;
   }
   .inactive_tab1
@@ -46,6 +59,7 @@ $conn = $database->getConnection();
    <h2 align="center">Multi Step Registration Form Using JQuery Bootstrap in PHP</h2><br />
    <?php echo $message??''; ?>
    <form method="post" id="register_form">
+    <input type="hidden" value="<?= $_SESSION['id']??0; ?>" name="id" id="hidden_id">
     <ul class="nav nav-tabs">
      <li class="nav-item">
       <a class="nav-link active_tab1" style="border:1px solid #ccc" id="list_login_details">Login Details</a>
@@ -64,12 +78,12 @@ $conn = $database->getConnection();
        <div class="panel-body">
         <div class="form-group">
          <label>Enter Email Address</label>
-         <input type="text" name="email" id="email" class="form-control" />
+         <input type="text" name="email" value="<?=$sessionVal['email']??'';?>" id="email" class="form-control" />
          <span id="error_email" class="text-danger error_email"></span>
         </div>
         <div class="form-group">
          <label>Enter Password</label>
-         <input type="password" name="password" id="password" class="form-control" />
+         <input type="password" name="password" value="<?=$sessionVal['password']??''?>" id="password" class="form-control" />
          <span id="error_password" class="text-danger"></span>
         </div>
         <br />
@@ -86,22 +100,23 @@ $conn = $database->getConnection();
        <div class="panel-body">
         <div class="form-group">
          <label>Enter First Name</label>
-         <input type="text" name="first_name" id="first_name" class="form-control" />
+         <input type="text" name="first_name" id="first_name" class="form-control" value="<?=$personaldetails['first_name']??'';?>" />
          <span id="error_first_name" class="text-danger"></span>
         </div>
         <div class="form-group">
          <label>Enter Last Name</label>
-         <input type="text" name="last_name" id="last_name" class="form-control" />
+         <input type="text" name="last_name" id="last_name" class="form-control" value="<?=$personaldetails['last_name']??'';?>"/>
          <span id="error_last_name" class="text-danger"></span>
         </div>
         <div class="form-group">
          <label>Gender</label>
          <label class="radio-inline">
-          <input type="radio" name="gender" value="male" checked> Male
+          <input type="radio" name="gender" value="male" class="gender" <?php if(($personaldetails['gender']??'') == 'male') { echo 'checked';}?> > Male
          </label>
          <label class="radio-inline">
-          <input type="radio" name="gender" value="female"> Female
+          <input type="radio" name="gender" value="female" class="gender" <?php if(($personaldetails['gender']??'') == 'female') { echo 'checked';}?>> Female
          </label>
+         <span id="error_gender" class="text-danger"></span>
         </div>
         <br />
         <div align="center">
@@ -118,12 +133,12 @@ $conn = $database->getConnection();
        <div class="panel-body">
         <div class="form-group">
          <label>Enter Address</label>
-         <textarea name="address" id="address" class="form-control"></textarea>
+         <textarea name="address" id="address" class="form-control"><?=$contact_details['address']??'' ?></textarea>
          <span id="error_address" class="text-danger"></span>
         </div>
         <div class="form-group">
          <label>Enter Mobile No.</label>
-         <input type="text" name="mobile_no" id="mobile_no" class="form-control" />
+         <input type="text" name="mobile_no" id="mobile_no" class="form-control" value="<?=$contact_details['mobile_no']??'' ?>" />
          <span id="error_mobile_no" class="text-danger"></span>
         </div>
         <br />
@@ -141,11 +156,14 @@ $conn = $database->getConnection();
 
   <script>
     $(document).ready(function(){
+
+        // login details
         $('#btn_login_details').on('click', function(){
             var email = $('#email').val().trim();
             var password = $('#password').val().trim();
+            var id = $('#hidden_id').val();
             var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            $('#error_email').text('');
+            // $('#error_email').text('');
             var valid = true;
             
             if(email === ''){
@@ -175,13 +193,139 @@ $conn = $database->getConnection();
                     type:"POST",
                     dataType:"json",
                     url:'save_multi_step_data.php',
-                    data:{email:email, password:password, step:'step-1'},
+                    data:{email:email, password:password, step:'step-1', id:id},
+                    success:function(data){
+                        $('#list_login_details').removeClass('active_tab1').addClass('inactive_tab1');
+                        $('#list_personal_details').addClass('active_tab1').removeClass('inactive_tab1');
+                        $('#login_details').removeClass('active').addClass('fade');
+                        $('#personal_details').addClass('active').removeClass('fade');
+                    }
+                });
+            }
+
+            $(document).on('click', '#previous_btn_personal_details', function(){
+                $('#list_login_details').addClass('active_tab1').removeClass('inactive_tab1');
+                $('#list_personal_details').removeClass('active_tab1').addClass('inactive_tab1');
+                $('#login_details').addClass('active').removeClass('fade');
+                $('#personal_details').removeClass('active').addClass('fade');
+            });
+
+        });
+
+        //personal details
+        $('#btn_personal_details').on('click', function(){
+            var first_name = $('#first_name').val().trim();
+            var last_name = $('#last_name').val().trim();
+            var gender = $("input[name='gender']:checked").val();
+            var id = $('#hidden_id').val();
+            // $('#error_email').text('');
+            var valid = true;
+            
+            if(first_name === ''){
+                $('#error_first_name').text('Please enter your first name');
+                $('#first_name').addClass('has-error');
+                valid = false;
+            } 
+            else {
+                $('#error_first_name').text('');
+                $('#last_name').removeClass('has-error');
+            }
+
+            if(last_name === ''){
+                $('#error_last_name').text('Please enter your last name');
+                $('#last_name').addClass('has-error');
+                valid = false;
+            }else{
+                $('#error_last_name').text('');
+                $('#last_name').removeClass('has-error');
+            }
+
+            if($("input[name='gender']:checked").val() === undefined){
+                $('#error_gender').text('Please choose your gender');
+                $('.gender').addClass('has-error');
+                valid = false;
+            }else{
+                $('#error_gender').text('');
+                $('.gender').removeClass('has-error');
+            }
+
+            if(valid){
+                $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    url:'save_multi_step_data.php',
+                    data:{first_name:first_name, last_name:last_name, gender:gender,step:'step-2', id:id},
+                    success:function(data){
+                        $('#list_personal_details').removeClass('active_tab1').addClass('inactive_tab1');
+                        $('#list_contact_details').addClass('active_tab1').removeClass('inactive_tab1');
+                        $('#personal_details').removeClass('active').addClass('fade');
+                        $('#contact_details').addClass('active').removeClass('fade');
+                    }
+                });
+            }
+
+            $(document).on('click', '#previous_btn_personal_details', function(){
+                $('#list_login_details').addClass('active_tab1').removeClass('inactive_tab1');
+                $('#list_personal_details').removeClass('active_tab1').addClass('inactive_tab1');
+                $('#login_details').addClass('active').removeClass('fade');
+                $('#personal_details').removeClass('active').addClass('fade');
+            });
+
+        });
+
+        $(document).on('click', '#previous_btn_personal_details', function(){
+            $('#list_login_details').addClass('active_tab1').removeClass('inactive_tab1');
+            $('#list_personal_details').removeClass('active_tab1').addClass('inactive_tab1');
+            $('#login_details').addClass('active').removeClass('fade');
+            $('#personal_details').removeClass('active').addClass('fade');
+        });
+
+        // contact details
+        $('#btn_contact_details').on('click', function(){
+            var address = $('#address').val().trim();
+            var mobile_no = $('#mobile_no').val().trim();
+            var id = $('#hidden_id').val();
+            // $('#error_email').text('');
+            var valid = true;
+            
+            if(address === ''){
+                $('#error_address').text('Please enter your address');
+                $('#address').addClass('has-error');
+                valid = false;
+            } 
+            else {
+                $('#error_address').text('');
+                $('#address').removeClass('has-error');
+            }
+
+            if(mobile_no === ''){
+                $('#error_mobile_no').text('Please enter your mobile number');
+                $('#mobile_no').addClass('has-error');
+                valid = false;
+            }else{
+                $('#error_mobile_no').text('');
+                $('#mobile_no').removeClass('has-error');
+            }
+
+            if(valid){
+                $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    url:'save_multi_step_data.php',
+                    data:{address:address, mobile_no:mobile_no,step:'step-3', id:id},
                     success:function(data){
                         console.log(data);
                     }
                 });
             }
 
+        });
+
+        $(document).on('click', '#previous_btn_contact_details', function(){
+            $('#list_contact_details').removeClass('active_tab1').addClass('inactive_tab1');
+            $('#list_personal_details').addClass('active_tab1').removeClass('inactive_tab1');
+            $('#contact_details').removeClass('active').addClass('fade');
+            $('#personal_details').addClass('active').removeClass('fade');
         });
     });
     </script>
