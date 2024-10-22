@@ -1,38 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./cdn/jquery.min.js"></script>
     <title>Character Limit Count</title>
-</head>
-<body>
-    
-        <textarea name="text" id="text_val" class="form-control"></textarea>
+  </head>
+  <body>
+    <textarea
+      name="text"
+      id="text_val"
+      class="form-control text_val"
+    ></textarea>
 
-        <div class="d-flex">
-            <p class="error-msg">Character Limit Exceed</p>
-            <p class="float-right"><span>0</span>/10</p>
-            <br clear="both">
-        </div>
-</body>
+    <div class="d-flex">
+      <p class="error-msg">Character Limit Exceed</p>
+      <p class="float-right"><span>0</span>/10</p>
+      <br clear="both" />
+    </div>
+  </body>
 
-<script>
-    $(document).ready(function(){
-        $('.error-msg').hide();
-        $('#text_val').on('keyup', function(){
-            var countChar = $(this).val().length;
-            $('.float-right span').text(countChar);
-            var splitVal = ($('.float-right').text()).split('/')
-            if(countChar > splitVal[1]){
-                $('.error-msg').show();
-                $('.error-msg').css('color', 'red');
-                $(this).css('border','1px solid red');
-            } else {
-                $('.error-msg').hide();
-            }
-            
-        })
-    })
-</script>
+  <script>
+    $(document).ready(function () {
+        $(".error-msg").hide();
+        
+        $(".text_val").on("input", function () {
+          var countChar = $(this).val().length;
+          var maxLength = parseInt($(".float-right").text().split("/")[1]);
+      
+          // Trim the text if it exceeds the maximum length
+          if (countChar > maxLength) {
+            console.log($(this).val($(this).val().substring(0, maxLength)));
+            countChar = maxLength; // Update countChar after trimming
+          }
+          
+          // Update the character count display
+          $(".float-right span").text(countChar);
+          
+          // Show error message if limit is exceeded
+          if (countChar >= maxLength) {
+            $(".error-msg").show();
+            $(".error-msg").css("color", "red");
+            $(this).css("border", "1px solid red");
+          } else {
+            $(".error-msg").hide();
+            $(this).css("border", "");
+          }
+        });
+      });
+      
+  </script>
 </html>
