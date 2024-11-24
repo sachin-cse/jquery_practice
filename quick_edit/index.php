@@ -96,6 +96,7 @@ $result = mysqli_query($conn, $query);
 
         let previousId = null;
 
+        // quick edit
         $(document).on('click','.quick_edit', function(e){
             e.preventDefault();
 
@@ -115,7 +116,7 @@ $result = mysqli_query($conn, $query);
             $currentId.find('.edit-input').focus();
         });
 
-        // save button
+          // save button
         $(document).on('click', '.save_edit', function(){
           // get current id
           var getId = $(this).attr('data-id');
