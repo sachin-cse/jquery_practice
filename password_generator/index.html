@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+     initial-scale=1.0">
+    <title>Password Generator - Jquery</title>
+    <script src="../cdn/jquery.min.js"></script>
+</head>
+
+<style>
+    body {
+        background: #eee;
+    }
+    
+    .container {
+        max-width: 400px;
+        margin: 1rem auto;
+        padding: 60px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+        background-color: white;
+        text-align: center;
+    }
+    
+    .title {
+        color: #008000;
+        font-size: 24px;
+    }
+    
+    .subtitle {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+    
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+    
+    .label {
+        flex: 1;
+    }
+    
+    .input {
+        padding: 15px;
+        border: 3px solid #ccc;
+        border-radius: 10px;
+        width: 150px;
+        font-size: 16px;
+    }
+    
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+    
+    .checkbox-container label {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+    
+    .generate-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    
+    .generate-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .generated-password-container {
+        display: none;
+        margin-top: 20px;
+    }
+    
+    .copy-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        font-size: 16px;
+        margin-left: 10px;
+    }
+    
+    .copy-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .success-message {
+        color: #008000;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+
+<body>
+    <div id="container" class="container">
+        <h1 class="title">Sachin Mandal</h1>
+        <h3 class="subtitle">Random Password Generator</h3>
+        <div id="inputContainer" class="input-container">
+            <label class="label">Password Length:</label>
+            <input type="number" min="8" max="32" value="12" class="input" id="passwordLength" />
+        </div>
+        <div id="checkboxContainer" class="checkbox-container">
+            <label><input type="checkbox" id="useSymbols"/>
+                Symbols
+            </label>
+            <label><input type="checkbox" id="useNumbers"/>
+                Numbers
+            </label>
+            <label><input type="checkbox" id="useLowerCase"/>
+                LowerCase
+            </label>
+            <label><input type="checkbox" id="useUpperCase"/>
+                UpperCase
+            </label>
+        </div>
+        <button class="generate-button" id="generatePassword">
+            Generate Password
+        </button>
+        <div id="generatedPasswordContainer" 
+            class="generated-password-container">
+            <div class="input-container">
+                <label class="label">Generated Password:</label>
+                <input type="text" id="generatedPassword" readonly 
+                    class="input" />
+                <button class="copy-button" id="copyToClipboard">
+                    Copy
+                </button>
+            </div>
+        </div>
+        <p id="successMessage" class="success-message"></p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function(){
+        $(document).on('click','#generatePassword',function(){
+            if($('#passwordLength').length != 0 && $('#useSymbols,#useNumbers,#useLowerCase,#useUpperCase').is(':checked')){
+
+                const useSymbols = $('#useSymbols').is(':checked');
+                const useNumbers = $('#useNumbers').is(':checked');
+                const useUpperCase = $('#useUpperCase').is(':checked');
+                const useLowerCase = $('#useLowerCase').is(':checked');
+
+                const passwordLength = parseInt($('#passwordLength').val());
+
+                let newPassword = '';
+                let charset = '';
+
+                if (useSymbols) charset += "!@#$%^&*()";
+                if (useNumbers) charset += "0123456789";
+                if (useLowerCase) charset += "abcdefghijklmnopqrstuvwxyz";
+                if (useUpperCase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                for(i=0; i<passwordLength; i++){
+                    newPassword += charset.charAt(Math.floor(Math.random()*charset.length));
+                }
+
+                password = newPassword;
+
+                $('#generatedPassword').val(password);
+                $('#generatedPasswordContainer').show();
+
+            }else{
+                alert('Please choose at least one checkbox');
+            }
+        });
+
+        <!-- copy password -->
+        $(document).on('click','#copyToClipboard',function(){
+
+            var getPassword = $('#generatedPassword').val();
+            var tempInput = $('<input>');
+
+            $('body').append(tempInput);
+            tempInput.val(getPassword).select();
+
+            // Copy the text to the clipboard
+            document.execCommand('copy');
+            tempInput.remove();
+            
+            $('#successMessage').text('Password copied to clipboard!')
+            setTimeout(function(){
+                $('#successMessage').text('');
+            },1000);
+
+
+        });
+    });
+</script>
