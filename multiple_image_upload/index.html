@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Image Upload</title>
+    <link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-mb-3">
+            <input id="avatar" type="file" name="avatar[]" multiple="multiple"/>
+
+            <div class="preview">
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var form_data = new FormData(); 
+            $(document).on('change', '#avatar',function(){
+                $('.preview').html("");
+                var len_files = $('#avatar').prop('files').length;
+                for(var i=0; i < len_files; i++){
+                    var file_data = $('#avatar').prop('files')[i];
+                    form_data.append("avatar[]", file_data);
+                    var construc = '<img width="200px" height="200px" src="' +  window.URL.createObjectURL(file_data) + '" alt="'  +  file_data.name  + '" /><i class="fa-thin fa-x remove_image"></i>';
+                    $('.preview').append(construc);
+                }
+            });
+
+            <!-- remove image -->
+            $(document).on('click','.remove_image',function(){
+                $(this).prev('img').remove();
+
+                <!-- remove x icon itself -->
+                $(this).remove();
+            });
+        });
+    </script>
+</body>
+</html>

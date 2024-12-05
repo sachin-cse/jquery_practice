@@ -90,72 +90,72 @@ $result = mysqli_query($conn, $query);
     "hideMethod": "fadeOut"
   }
 
-    $(document).ready(function(){
-        // load dataTable;
-        $('#quick_edit').DataTable();
+  $(document).ready(function(){
+      // load dataTable;
+      $('#quick_edit').DataTable();
 
-        let previousId = null;
+      let previousId = null;
 
-        // quick edit
-        $(document).on('click','.quick_edit', function(e){
-            e.preventDefault();
+      // quick edit
+      $(document).on('click','.quick_edit', function(e){
+          e.preventDefault();
 
-            const $currentId = $(this);
-            const getName = $currentId.data('name');
-            const getId = $currentId.data('id');
+          const $currentId = $(this);
+          const getName = $currentId.data('name');
+          const getId = $currentId.data('id');
 
-            if(previousId && previousId[0] !== $currentId[0]){
-              revertPrevioustd(previousId);
-            }
-
-            previousId = $currentId;
-
-            $currentId.html(`<input type="text" class="edit-input" name="name" data-id="${getId}" value="${getName}">
-            <button class="save_edit" data-id="${getId}">Save</button>`);
-
-            $currentId.find('.edit-input').focus();
-        });
-
-          // save button
-        $(document).on('click', '.save_edit', function(){
-          // get current id
-          var getId = $(this).attr('data-id');
-          // get current name
-          var getName = $(this).siblings('.edit-input').val();
-          // call ajax
-          if(getName != null && getId != null){
-            $.ajax({
-              url:'save_quick_edit.php',
-              type:'post',
-              data:{id:getId,name:getName},
-              dataType:'json',
-              success:function(data){
-                if(data.success != ""){
-                  toastr.success(data.success);
-
-                  setTimeout(function(){
-                    location.reload(true);
-                  },500);
-               
-                }else{
-                  toastr.success(data.error);
-                }
-              }
-            });
+          if(previousId && previousId[0] !== $currentId[0]){
+            revertPrevioustd(previousId);
           }
-        });
 
-       
-    });
+          previousId = $currentId;
 
-    function revertPrevioustd(previousData){
-      const name = previousData.data('name');
-      const id = previousData.data('id');
-      const className = previousData.data('class');
-      previousData.html(name)  // Restore the name as the content
-                      .attr('data-id', id)  // Restore the id
-                      .attr('data-name', name)  // Restore the name attribute
-                      .attr('class', className); // Restore the class
-    }
+          $currentId.html(`<input type="text" class="edit-input" name="name" data-id="${getId}" value="${getName}">
+          <button class="save_edit" data-id="${getId}">Save</button>`);
+
+          $currentId.find('.edit-input').focus();
+      });
+
+        // save button
+      $(document).on('click', '.save_edit', function(){
+        // get current id
+        var getId = $(this).attr('data-id');
+        // get current name
+        var getName = $(this).siblings('.edit-input').val();
+        // call ajax
+        if(getName != null && getId != null){
+          $.ajax({
+            url:'save_quick_edit.php',
+            type:'post',
+            data:{id:getId,name:getName},
+            dataType:'json',
+            success:function(data){
+              if(data.success != ""){
+                toastr.success(data.success);
+
+                setTimeout(function(){
+                  location.reload(true);
+                },500);
+              
+              }else{
+                toastr.success(data.error);
+              }
+            }
+          });
+        }
+      });
+
+      
+  });
+
+  function revertPrevioustd(previousData){
+    const name = previousData.data('name');
+    const id = previousData.data('id');
+    const className = previousData.data('class');
+    previousData.html(name)  // Restore the name as the content
+                    .attr('data-id', id)  // Restore the id
+                    .attr('data-name', name)  // Restore the name attribute
+                    .attr('class', className); // Restore the class
+  }
 </script>
 
