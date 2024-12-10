@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hare Krishna Chanting</title>
+    <script src="../cdn/jquery.min.js"></script>
+
+    <style>
+
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+    
+        h1 {
+          font-size: 36px;
+          color: purple; /* Text color for "Hare Krishna" */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px; /* Space between text and images */
+        }
+    
+        h1 img {
+          width: 40px; /* Adjust image width */
+          height: auto; /* Maintain aspect ratio */
+          vertical-align: middle; /* Align with the text */
+        }
+    
+        #counter, #round {
+          font-size: 24px;
+          margin: 20px;
+        }
+    
+        #round span {
+          font-weight: bold;
+          color: darkgreen;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          gap: 10px; /* Space between buttons */
+          margin-top: 20px;
+        }
+    
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          border: 1px solid #ccc;
+          border-radius: 5px; /* Rounded corners */
+          background-color: #f8f9fa;
+          transition: background-color 0.3s, transform 0.2s;
+        }
+    
+        button:hover {
+          background-color: #e2e6ea;
+          transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+    
+        button:active {
+          background-color: #d6d8db;
+        }
+
+      </style>
+</head>
+<body>
+
+  <!-- audio play -->
+  <audio id="chatAudio" >
+      <source src=
+  "https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3" 
+      type="audio/mpeg">
+  </audio>
+    <h1>
+      <img src = "./peacock_feather.png" alt="peacock feather">Hare Krishna
+      <img src="./peacock_feather.png" alt="peacock feather">
+    </h1>
+    <div id="counter">0</div>
+    <div id="round">Total Round:
+      <span class="total_round">0</span>
+    </div>
+    <button id="decrement">-</button>
+    <button id="increment">+</button>
+    <button id="clear_chanting">Clear Chant</button>
+    <button id="clear_all">Clear All</button>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        const chant_limit = parseInt(108);
+        var i = 0;
+        var j=0;
+        <!-- increament -->
+        $(document).on('click','#increment', function(e){
+          i+=1;
+          $('#round').find('.total_round').text(i);
+          play();
+
+          if(i==108){
+            j+=1;
+            $('#counter').text(j);
+            i=0;
+            $('#round').find('.total_round').text(i);
+          }
+        });
+
+        <!-- decreament value -->
+        $(document).on('click','#decrement', function(e){
+          i-=1;
+
+          if(i < 0){
+            alert('Negative number not allowed')
+          }else{
+            $('#round').find('.total_round').text(i);
+          }
+        });
+
+        <!-- clear chant -->
+        $(document).on('click','#clear_chanting',function(){
+
+          var isYes = confirm('Are you sure you want to clear your chant');
+          if(isYes){
+            $('#round').find('.total_round').text(0);
+            i=0;
+          }
+
+        });
+
+        function play(){
+          let audio = document.getElementById('chatAudio');
+          audio.play();
+        }
+    });
+</script>
+</html>
