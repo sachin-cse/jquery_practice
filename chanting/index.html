@@ -33,6 +33,12 @@
           font-size: 24px;
           margin: 20px;
         }
+
+        #counter span{
+          font-size: 24px;
+          color: darkgreen;
+        }
+        
     
         #round span {
           font-weight: bold;
@@ -79,8 +85,8 @@
       <img src = "./peacock_feather.png" alt="peacock feather">Hare Krishna
       <img src="./peacock_feather.png" alt="peacock feather">
     </h1>
-    <div id="counter">0</div>
-    <div id="round">Total Round:
+    <div id="counter">Total Round: <span class="total_chant_round">0</span></div>
+    <div id="round">Round:
       <span class="total_round">0</span>
     </div>
     <button id="decrement">-</button>
@@ -103,7 +109,7 @@
           if(i==108){
             Croundplay();
             j+=1;
-            $('#counter').text(j);
+            $('#counter').find('.total_chant_round').text(j);
             i=0;
             $('#round').find('.total_round').text(i);
           }
@@ -137,7 +143,7 @@
           i=0;
           $('#round').find('.total_round').text(i);
           j=0;
-          $('#counter').text(j);
+          $('#counter').find('.total_chant_round').text(j);
         });
 
         function Croundplay(){
