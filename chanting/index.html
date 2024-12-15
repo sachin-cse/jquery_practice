@@ -91,6 +91,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+        var chanting_sound = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
         const chant_limit = parseInt(108);
         var i = 0;
         var j=0;
@@ -98,9 +99,9 @@
         $(document).on('click','#increment', function(e){
           i+=1;
           $('#round').find('.total_round').text(i);
-          play();
-
+          chanting_sound.play();
           if(i==108){
+            Croundplay();
             j+=1;
             $('#counter').text(j);
             i=0;
@@ -113,6 +114,7 @@
           i-=1;
 
           if(i < 0){
+            i=0;
             alert('Negative number not allowed')
           }else{
             $('#round').find('.total_round').text(i);
@@ -130,7 +132,15 @@
 
         });
 
-        function play(){
+        <!-- clear all  -->
+        $(document).on('click','#clear_all', function(){
+          i=0;
+          $('#round').find('.total_round').text(i);
+          j=0;
+          $('#counter').text(j);
+        });
+
+        function Croundplay(){
           let audio = document.getElementById('chatAudio');
           audio.play();
         }
